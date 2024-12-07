@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "web-hw11"
+version = "0.1.0"
+description = ""
+authors = ["RHA1705 <garbarzroman47@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.6"
+uvicorn = {extras = ["standard"], version = "^0.32.1"}
+sqlalchemy = "^2.0.36"
+alembic = "^1.14.0"
+psycopg2 = "^2.9.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
