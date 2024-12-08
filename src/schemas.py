@@ -8,6 +8,7 @@ class CreteContact(BaseModel):
     second_name: str = Field(max_length=50)
     email: EmailStr = Field(max_length=150)
     phone: str = Field(max_length=50)
+    owner_id: int
     born_date: date
 
     # @field_validator("born_date")
