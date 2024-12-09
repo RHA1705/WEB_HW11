@@ -10,6 +10,10 @@ class RoleEnum(Enum):
 class UserBase(BaseModel):
     user_name: str
     email: EmailStr
+    avatar: str
+
+    class Config:
+        from_attributes = True
 
 
 class UserCreate(UserBase):
@@ -31,3 +35,7 @@ class Token(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str
+
+
+class RequestEmail(BaseModel):
+    email: EmailStr

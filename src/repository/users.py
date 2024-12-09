@@ -28,3 +28,15 @@ async def get_user_by_username(username: str, db: Session):
     # result = await self.session.execute(query)
     return query  # result.scalar_one_or_none()
 
+
+async def confirmed_email(email: str, db: Session) -> None:
+    user = await get_user_by_email(email, db)
+    user.confirmed = True
+    db.commit()
+
+
+async def update_avatar(email, url: str, db: Session) -> User:
+    user = await get_user_by_email(email, db)
+    user.avatar = url
+    db.commit()
+    return user

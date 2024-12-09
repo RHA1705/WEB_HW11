@@ -73,7 +73,6 @@ def decode_access_token(token: str) -> TokenData | None:
 async def get_current_user(
     token: str = Depends(oauth2_schema), db: Session = Depends(get_db)
 ) -> User:
-    print(token)
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -89,29 +88,23 @@ async def get_current_user(
     return user
 
 
-# async def get_current_user(token: str = Depends(oauth2_schema), db: Session = Depends(get_db)):
-#     credentials_exception = HTTPException(
-#         status_code=status.HTTP_401_UNAUTHORIZED,
-#         detail="Could not validate credentials",
-#         headers={"WWW-Authenticate": "Bearer"},
-#     )
-#     try:
-#         # Decode JWT
-#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-#         print(payload)
-#         if payload['scope'] == 'access_token':
-#             email = payload["sub"]
-#             if email is None:
-#                 raise credentials_exception
-#         else:
-#             raise credentials_exception
-#     except JWTError as e:
-#         raise credentials_exception
-#
-#     user = await repository_users.get_user_by_email(email, db)
-#     if user is None:
-#         raise credentials_exception
-#     return user
+def create_email_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(days=7)
+    to_encode.update({"iat": datetime.utcnow(), "exp": expire})
+    token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return token
+
+
+async def get_email_from_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload["sub"]
+        return email
+    except JWTError as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            detail="Invalid token for email verification")
 
 
 class RoleChecker:

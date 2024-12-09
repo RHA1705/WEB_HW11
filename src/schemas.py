@@ -1,6 +1,5 @@
 from datetime import date, datetime
-from typing import List, Optional
-from pydantic import BaseModel, Field, EmailStr, field_validator
+from pydantic import BaseModel, Field, EmailStr
 
 
 class CreteContact(BaseModel):
@@ -10,14 +9,6 @@ class CreteContact(BaseModel):
     phone: str = Field(max_length=50)
     owner_id: int
     born_date: date
-
-    # @field_validator("born_date")
-    # def parse_birthdate(cls, value):
-    #     return datetime.strptime(
-    #         value,
-    #         "%d.%m.%Y"
-    #     ).date()
-
 
 
 class ResponseContact(BaseModel):
@@ -32,3 +23,5 @@ class ResponseContact(BaseModel):
 
     class Config:
         from_attributes = True
+
+

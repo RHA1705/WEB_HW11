@@ -1,4 +1,6 @@
 from fastapi import APIRouter, status, Depends, HTTPException, Query
+from fastapi_limiter.depends import RateLimiter
+
 from src.schemas import ResponseContact, CreteContact
 from sqlalchemy.orm import Session
 from src.database.db import get_db
@@ -71,7 +73,8 @@ async def remove_contact(contact_id: int,
     return tag
 
 
-@router.post('/', response_model=ResponseContact, status_code=status.HTTP_201_CREATED)
+@router.post('/', response_model=ResponseContact, status_code=status.HTTP_201_CREATED,
+             dependencies=[Depends(RateLimiter(times=10, seconds=60))])
 async def create_contact(body: CreteContact,
                          db: Session = Depends(get_db),
                          current_user: User = Depends(get_current_user)):

@@ -25,6 +25,8 @@ class User(Base):
     user_name = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     hashes_password = Column(String(200), nullable=False, unique=True)
+    confirmed = Column(Boolean, default=False)
     # is_active = Column(Boolean, default=True)
     contacts = relationship("Contact", back_populates="owner")
+    avatar = Column(String, nullable=True)
 
