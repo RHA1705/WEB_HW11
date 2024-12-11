@@ -35,13 +35,32 @@ app.add_middleware(
 
 @app.get("/", dependencies=[Depends(RateLimiter(times=2, seconds=5))])
 async def index():
+    """
+    Root endpoint with rate limiting.
+
+    Allows a maximum of 2 requests every 5 seconds.
+
+    Returns:
+        dict: A welcome message.
+    """
     return {"msg": "Hello World"}
 
 
 @app.get("/")
 def read_root():
+    """
+    Root endpoint without rate limiting.
+
+    Returns:
+        dict: A welcome message.
+    """
     return {"message": "Hello World"}
 
 
 if __name__ == '__main__':
+    """
+    Main entry point for the FastAPI application.
+
+    Runs the application using Uvicorn with hot reloading enabled.
+    """
     uvicorn.run('main:app', host='localhost', port=8000, reload=True)

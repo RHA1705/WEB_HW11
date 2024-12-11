@@ -24,6 +24,20 @@ conf = ConnectionConfig(
 
 
 async def send_email(email: EmailStr, username: str, host: str):
+    """
+    Send a confirmation email to the user.
+
+    Args:
+        email (EmailStr): The recipient's email address.
+        username (str): The recipient's username.
+        host (str): The host URL for constructing the confirmation link.
+
+    Returns:
+        None
+
+    Raises:
+        ConnectionErrors: If there is an issue with the email connection.
+    """
     try:
         token_verification = utils.create_email_token({"sub": email})
         message = MessageSchema(
